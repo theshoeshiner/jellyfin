@@ -18,6 +18,7 @@ using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.MediaEncoding;
+using Jellyfin.Data.Entities.Libraries;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
@@ -64,6 +65,7 @@ namespace MediaBrowser.MediaEncoding.Subtitles
             Stream stream,
             string inputFormat,
             string outputFormat,
+            int? offset,
             long startTimeTicks,
             long endTimeTicks,
             bool preserveOriginalTimestamps,
@@ -75,6 +77,15 @@ namespace MediaBrowser.MediaEncoding.Subtitles
             {
                 var reader = GetReader(inputFormat);
                 var trackInfo = reader.Parse(stream, cancellationToken);
+                
+                if (offset.HasValue)
+                {
+                    foreach (var trackEvent in trackInfo.TrackEvents)
+                    {
+                        trackEvent.EndPositionTicks += offset.Value * 10000;
+                        trackEvent.StartPositionTicks += offset.Value * 10000;
+                    }
+                }
 
                 FilterEvents(trackInfo, startTimeTicks, endTimeTicks, preserveOriginalTimestamps);
 
@@ -143,14 +154,14 @@ namespace MediaBrowser.MediaEncoding.Subtitles
 
             // Return the original if the same format is being requested
             // Character encoding was already handled in GetSubtitleStream
-            if (string.Equals(inputFormat, outputFormat, StringComparison.OrdinalIgnoreCase))
-            {
+            // If subtitle file has an offset then we must run conversion process to honor the offset
+            if (!subtitleStream.Offset.HasValue && string.Equals(inputFormat, outputFormat, StringComparison.OrdinalIgnoreCase))
                 return subtitle.Stream;
             }
 
             using (var stream = subtitle.Stream)
             {
-                return ConvertSubtitles(stream, inputFormat, outputFormat, startTimeTicks, endTimeTicks, preserveOriginalTimestamps, cancellationToken);
+                return ConvertSubtitles(stream, inputFormat, outputFormat, subtitleStream.Offset, startTimeTicks, endTimeTicks, preserveOriginalTimestamps, cancellationToken);
             }
         }
 

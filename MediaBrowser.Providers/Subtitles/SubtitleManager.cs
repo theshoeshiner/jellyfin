@@ -24,6 +24,7 @@ using MediaBrowser.Model.Globalization;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Providers;
 using Microsoft.Extensions.Logging;
+using MediaBrowser.Providers.Manager;
 
 namespace MediaBrowser.Providers.Subtitles
 {
@@ -34,6 +35,7 @@ namespace MediaBrowser.Providers.Subtitles
         private readonly ILibraryMonitor _monitor;
         private readonly IMediaSourceManager _mediaSourceManager;
         private readonly ILocalizationManager _localization;
+        private readonly IItemRepository _itemRepo;
 
         private ISubtitleProvider[] _subtitleProviders;
 
@@ -42,6 +44,7 @@ namespace MediaBrowser.Providers.Subtitles
             IFileSystem fileSystem,
             ILibraryMonitor monitor,
             IMediaSourceManager mediaSourceManager,
+            IItemRepository itemRepo,
             ILocalizationManager localizationManager)
         {
             _logger = logger;
@@ -49,6 +52,7 @@ namespace MediaBrowser.Providers.Subtitles
             _monitor = monitor;
             _mediaSourceManager = mediaSourceManager;
             _localization = localizationManager;
+            _itemRepo = itemRepo;
         }
 
         /// <inheritdoc />
@@ -199,6 +203,11 @@ namespace MediaBrowser.Providers.Subtitles
             if (response.IsForced)
             {
                 saveFileName += ".forced";
+            }
+            
+            if (response.Offset.HasValue)
+            {
+                saveFileName += ".offset" + response.Offset.Value;
             }
 
             saveFileName += "." + response.Format.ToLowerInvariant();

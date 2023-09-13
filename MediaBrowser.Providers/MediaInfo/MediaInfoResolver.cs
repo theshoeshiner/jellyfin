@@ -120,7 +120,8 @@ namespace MediaBrowser.Providers.MediaInfo
                                 mediaStream.Index = startIndex++;
                                 mediaStream.IsDefault = pathInfo.IsDefault || mediaStream.IsDefault;
                                 mediaStream.IsForced = pathInfo.IsForced || mediaStream.IsForced;
-
+								mediaStream.Offset = pathInfo.Offset;
+								
                                 mediaStreams.Add(MergeMetadata(mediaStream, pathInfo));
                             }
                         }

@@ -279,6 +279,11 @@ namespace Emby.Naming.Common
             {
                 "default"
             };
+            
+            MediaOffsetFlags = new[]
+            {
+                "offset"
+            };
 
             EpisodeExpressions = new[]
             {
@@ -726,6 +731,11 @@ namespace Emby.Naming.Common
         /// Gets or sets list of external media default flags.
         /// </summary>
         public string[] MediaDefaultFlags { get; set; }
+        
+        /// <summary>
+        /// Gets or sets list of external media offset flags.
+        /// </summary>
+        public string[] MediaOffsetFlags { get; set; }
 
         /// <summary>
         /// Gets or sets list of album stacking prefixes.

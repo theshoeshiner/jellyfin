@@ -421,6 +421,64 @@ namespace Jellyfin.Api.Controllers
 
             return NoContent();
         }
+        
+        /// <summary>
+    /// Deletes an external subtitle file.
+    /// </summary>
+    /// <param name="itemId">The item id.</param>
+    /// <param name="index">The index of the subtitle file.</param>
+    /// <param name="offset">The new offset.</param>
+    /// <response code="204">Subtitle offset updated.</response>
+    /// <response code="404">Item not found.</response>
+    /// <returns>A <see cref="NoContentResult"/>.</returns>
+    [HttpPost("Videos/{itemId}/Subtitles/{index}/Offset")]
+    [Authorize(Policy = Policies.RequiresElevation)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> UpdateSubtitleOffset(
+        [FromRoute, Required] Guid itemId,
+        [FromRoute, Required] int index,
+        [FromBody, Required] UpdateOffsetDto offset)
+    {
+        Video item = (Video)_libraryManager.GetItemById(itemId);
+
+        _logger.LogInformation("UpdateSubtitleOffset itemId: {ItemId} : {Index} offset: {Offset}", itemId, index, offset.Offset);
+
+        if (item is null)
+        {
+            return NotFound();
+        }
+
+        var stream = _mediaSourceManager.GetMediaStreams(new MediaStreamQuery
+        {
+            Index = index,
+            ItemId = item.Id,
+            Type = MediaStreamType.Subtitle
+        })[0];
+        var oldPath = stream.Path;
+        var memoryStream = AsyncFile.OpenRead(stream.Path);
+        await using (memoryStream.ConfigureAwait(false))
+        {
+            await _subtitleManager.UploadSubtitle(
+                item,
+                new SubtitleResponse
+                {
+                    // TODO FIXME
+                    Format = "srt",
+                    Language = stream.Language,
+                    IsForced = stream.IsForced,
+                    IsHearingImpaired = stream.IsHearingImpaired,
+                    Offset = (int)(float.Parse(offset.Offset, CultureInfo.InvariantCulture) * 1000),
+                    Stream = memoryStream
+                }).ConfigureAwait(false);
+
+            _fileSystem.DeleteFile(oldPath);
+
+            _providerManager.QueueRefresh(item.Id, new MetadataRefreshOptions(new DirectoryService(_fileSystem)), RefreshPriority.High);
+
+            return NoContent();
+        }
+    }
 
         /// <summary>
         /// Encodes a subtitle in the specified format.
