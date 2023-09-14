@@ -47,5 +47,11 @@ namespace Emby.Naming.ExternalFiles
         /// </summary>
         /// <value><c>true</c> if this instance is forced; otherwise, <c>false</c>.</value>
         public bool IsForced { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating the desired offset of this instance.
+        /// </summary>
+        /// <value>The number of milliseconds of the offset.</value>
+        public int? Offset { get; set; }
     }
 }

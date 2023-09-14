@@ -47,7 +47,7 @@ namespace MediaBrowser.MediaEncoding.Probing
             "As/Hi Soundworks",
             "Au/Ra",
             "Bremer/McCoy",
-            "이달의 소녀 1/3",
+            "ì�´ë‹¬ì�˜ ì†Œë…€ 1/3",
             "R!N / Gemie",
             "LOONA 1/3",
             "LOONA / yyxy",
@@ -718,6 +718,7 @@ namespace MediaBrowser.MediaEncoding.Probing
                 stream.LocalizedDefault = _localization.GetLocalizedString("Default");
                 stream.LocalizedForced = _localization.GetLocalizedString("Forced");
                 stream.LocalizedExternal = _localization.GetLocalizedString("External");
+				stream.LocalizedOffset = _localization.GetLocalizedString("Offset");
 
                 if (string.IsNullOrEmpty(stream.Title))
                 {
