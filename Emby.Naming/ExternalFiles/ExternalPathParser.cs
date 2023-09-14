@@ -1,11 +1,11 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Emby.Naming.Common;
 using Jellyfin.Extensions;
 using MediaBrowser.Model.Dlna;
 using MediaBrowser.Model.Globalization;
-using System.Globalization;
 
 namespace Emby.Naming.ExternalFiles
 {
@@ -102,7 +102,7 @@ namespace Emby.Naming.ExternalFiles
                     }
                     else if (_namingOptions.MediaOffsetFlags.Any(s => currentSliceWithoutSeparator.Contains(s, StringComparison.OrdinalIgnoreCase)))
                     {
-                        pathInfo.Offset = int.Parse(currentSliceWithoutSeparator.AsSpan().Slice(6), CultureInfo.InvariantCulture);
+                        pathInfo.Offset = int.Parse(currentSliceWithoutSeparator.AsSpan().Slice(6), provider: CultureInfo.InvariantCulture);
                         extraString = extraString.Replace(currentSlice, string.Empty, StringComparison.OrdinalIgnoreCase);
                     }
                     else

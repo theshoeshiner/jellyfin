@@ -18,8 +18,8 @@ using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.MediaEncoding;
-using MediaBrowser.Controller.Persistence;
 using MediaBrowser.Controller.Net;
+using MediaBrowser.Controller.Persistence;
 using MediaBrowser.Controller.Providers;
 using MediaBrowser.Controller.Subtitles;
 using MediaBrowser.Model.Entities;
@@ -469,7 +469,6 @@ namespace Jellyfin.Api.Controllers
                     Format = "srt",
                     Language = stream.Language,
                     IsForced = stream.IsForced,
-                    IsHearingImpaired = stream.IsHearingImpaired,
                     Offset = (int)(float.Parse(offset.Offset, CultureInfo.InvariantCulture) * 1000),
                     Stream = memoryStream
                 }).ConfigureAwait(false);

@@ -24,7 +24,6 @@ using MediaBrowser.Model.Globalization;
 using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Providers;
 using Microsoft.Extensions.Logging;
-using MediaBrowser.Providers.Manager;
 
 namespace MediaBrowser.Providers.Subtitles
 {

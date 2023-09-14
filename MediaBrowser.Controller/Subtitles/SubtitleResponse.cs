@@ -15,5 +15,7 @@ namespace MediaBrowser.Controller.Subtitles
         public bool IsForced { get; set; }
 
         public Stream Stream { get; set; }
+
+        public int? Offset { get; set; }
     }
 }

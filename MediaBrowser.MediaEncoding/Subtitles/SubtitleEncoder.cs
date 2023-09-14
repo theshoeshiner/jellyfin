@@ -18,7 +18,6 @@ using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Controller.MediaEncoding;
-using Jellyfin.Data.Entities.Libraries;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.IO;
@@ -77,7 +76,7 @@ namespace MediaBrowser.MediaEncoding.Subtitles
             {
                 var reader = GetReader(inputFormat);
                 var trackInfo = reader.Parse(stream, cancellationToken);
-                
+
                 if (offset.HasValue)
                 {
                     foreach (var trackEvent in trackInfo.TrackEvents)
@@ -155,7 +154,7 @@ namespace MediaBrowser.MediaEncoding.Subtitles
             // Return the original if the same format is being requested
             // Character encoding was already handled in GetSubtitleStream
             // If subtitle file has an offset then we must run conversion process to honor the offset
-            if (!subtitleStream.Offset.HasValue && string.Equals(inputFormat, outputFormat, StringComparison.OrdinalIgnoreCase))
+            if (!subtitleStream.Offset.HasValue && string.Equals(inputFormat, outputFormat, StringComparison.OrdinalIgnoreCase)) {
                 return subtitle.Stream;
             }
 

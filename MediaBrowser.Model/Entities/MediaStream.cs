@@ -261,11 +261,6 @@ namespace MediaBrowser.Model.Entities
                         {
                             attributes.Add(Channels.Value.ToString(CultureInfo.InvariantCulture) + " ch");
                         }
-                        
-                        if (Offset.HasValue && Offset != 0)
-                        {
-                            attributes.Add((string.IsNullOrEmpty(LocalizedOffset) ? "Offset" : LocalizedOffset) + " " + (Offset > 0 ? "+" : string.Empty) + $"{Offset / 1000f:0.#}" + "s");
-                        }
 
                         if (IsDefault)
                         {
@@ -372,6 +367,12 @@ namespace MediaBrowser.Model.Entities
                             attributes.Add(string.IsNullOrEmpty(LocalizedExternal) ? "External" : LocalizedExternal);
                         }
 
+
+                        if (Offset.HasValue && Offset != 0)
+                        {
+                            attributes.Add((string.IsNullOrEmpty(LocalizedOffset) ? "Offset" : LocalizedOffset) + " " + (Offset > 0 ? "+" : string.Empty) + $"{Offset / 1000f:0.#}" + "s");
+                        }
+
                         if (!string.IsNullOrEmpty(Title))
                         {
                             var result = new StringBuilder(Title);
@@ -459,7 +460,7 @@ namespace MediaBrowser.Model.Entities
         /// </summary>
         /// <value><c>true</c> if this instance is forced; otherwise, <c>false</c>.</value>
         public bool IsForced { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating the desired offset of this instance.
         /// </summary>
