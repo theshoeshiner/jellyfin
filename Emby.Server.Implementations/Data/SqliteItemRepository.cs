@@ -5891,6 +5891,7 @@ AND Type = @InternalPersonType)");
                         statement.TryBind("@ElPresentFlag" + index, stream.ElPresentFlag);
                         statement.TryBind("@BlPresentFlag" + index, stream.BlPresentFlag);
                         statement.TryBind("@DvBlSignalCompatibilityId" + index, stream.DvBlSignalCompatibilityId);
+                        statement.TryBind("@Offset" + index, stream.Offset);
                     }
 
                     statement.Reset();
@@ -6102,12 +6103,18 @@ AND Type = @InternalPersonType)");
                 item.DvBlSignalCompatibilityId = dvBlSignalCompatibilityId;
             }
 
+            if (reader.TryGetInt32(43, out var offset))
+            {
+                item.Offset = offset;
+            }
+
             if (item.Type == MediaStreamType.Subtitle)
             {
                 item.LocalizedUndefined = _localization.GetLocalizedString("Undefined");
                 item.LocalizedDefault = _localization.GetLocalizedString("Default");
                 item.LocalizedForced = _localization.GetLocalizedString("Forced");
                 item.LocalizedExternal = _localization.GetLocalizedString("External");
+                item.LocalizedOffset = _localization.GetLocalizedString("Offset");
             }
 
             return item;
