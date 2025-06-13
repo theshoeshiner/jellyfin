@@ -19,7 +19,7 @@ namespace MediaBrowser.Controller.LiveTv
             ProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             SeriesProviderIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             Tags = Array.Empty<string>();
-            RecordingPaths = Array.Empty<string>();
+            RecordingPartPaths = Array.Empty<string>();
         }
 
         public Dictionary<string, string> ProviderIds { get; set; }
@@ -166,7 +166,7 @@ namespace MediaBrowser.Controller.LiveTv
 
         public string CurrentRecordingPath { get; set; }
 
-        public string[] RecordingPaths { get; set; }
+        public string[] RecordingPartPaths { get; set; }
 
         public KeepUntil KeepUntil { get; set; }
     }
